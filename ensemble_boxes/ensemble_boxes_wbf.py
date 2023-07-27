@@ -1,7 +1,6 @@
 # coding: utf-8
 __author__ = 'ZFTurbo: https://kaggle.com/zfturbo'
 
-
 import warnings
 import numpy as np
 
@@ -24,7 +23,7 @@ def prefilter_boxes(boxes, scores, labels, weights, thr):
             score = scores[t][j]
             if score < thr:
                 continue
-            label = int(labels[t][j])
+            label = labels[t][j] # previously typecasted to int(labels[t][j])
             box_part = boxes[t][j]
             x1 = float(box_part[0])
             y1 = float(box_part[1])
@@ -67,7 +66,7 @@ def prefilter_boxes(boxes, scores, labels, weights, thr):
                 continue
 
             # [label, score, weight, model index, x1, y1, x2, y2]
-            b = [int(label), float(score) * weights[t], weights[t], t, x1, y1, x2, y2]
+            b = [label, float(score) * weights[t][j], weights[t][j], t, x1, y1, x2, y2] # label was typecasted to int & weight was float(score) * weights[t]
             if label not in new_boxes:
                 new_boxes[label] = []
             new_boxes[label].append(b)
