@@ -203,19 +203,19 @@ def weighted_boxes_fusion(
         new_boxes = []
         weighted_boxes = np.empty((0, 8))
         print(str(label) + " (label):")
-        print("new_boxes: " + new_boxes)
+        print("new_boxes: " + ','.join(str(x) for x in new_boxes))
         # Clusterize boxes
         for j in range(0, len(boxes)):
             print(str(j) + " (j):")
             index, best_iou = find_matching_box_fast(weighted_boxes, boxes[j], iou_thr)
-            print("index: " + index)
+            print("index: " + str(index))
 
             if index != -1:
                 new_boxes[index].append(boxes[j])
-                print("boxes[j]: " + boxes[j])
-                print("new_boxes: " + new_boxes)
+                print("boxes[j]: " + ','.join(str(x) for x in boxes[j]))
+                print("new_boxes: " + ','.join(str(x) for x in new_boxes))
                 weighted_boxes[index] = get_weighted_box(new_boxes[index], conf_type)
-                print("weighted_boxes[index]: " + weighted_boxes[index])
+                print("weighted_boxes[index]: " + ','.join(str(x) for x in weighted_boxes[index]))
             else:
                 new_boxes.append([boxes[j].copy()])
                 weighted_boxes = np.vstack((weighted_boxes, boxes[j].copy()))
