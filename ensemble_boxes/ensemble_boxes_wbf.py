@@ -186,7 +186,8 @@ def weighted_boxes_fusion(
     if len(weights) != len(boxes_list):
         print('Warning: incorrect number of weights {}. Must be: {}. Set weights equal to 1.'.format(len(weights), len(boxes_list)))
         weights = np.ones(len(boxes_list))
-    weights = np.array(weights, dtype=object)
+    weights1 = np.array(weights[0])
+    weights2 = np.array(weights[1])
 
     if conf_type not in ['avg', 'max', 'box_and_model_avg', 'absent_model_aware_avg']:
         print('Unknown conf_type: {}. Must be "avg", "max" or "box_and_model_avg", or "absent_model_aware_avg"'.format(conf_type))
@@ -203,7 +204,7 @@ def weighted_boxes_fusion(
         new_boxes = []
         weighted_boxes = np.empty((0, 8))
         print(str(label) + " (label):")
-        print("new_boxes: " + ','.join(str(x) for x in new_boxes))
+        print("new_boxes: " + ",".join(str(x) for x in new_boxes))
         # Clusterize boxes
         for j in range(0, len(boxes)):
             print(str(j) + " (j):")
@@ -215,7 +216,7 @@ def weighted_boxes_fusion(
                 print("boxes[j]: " + ','.join(str(x) for x in boxes[j]))
                 print("new_boxes: " + ','.join(str(x) for x in new_boxes))
                 weighted_boxes[index] = get_weighted_box(new_boxes[index], conf_type)
-                print("weighted_boxes[index]: " + ','.join(str(x) for x in weighted_boxes[index]))
+                print("weighted_boxes[index]: " + ",".join(str(x) for x in weighted_boxes[index]))
             else:
                 new_boxes.append([boxes[j].copy()])
                 weighted_boxes = np.vstack((weighted_boxes, boxes[j].copy()))
