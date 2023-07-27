@@ -218,6 +218,7 @@ def weighted_boxes_fusion(
                 weighted_boxes[index] = get_weighted_box(new_boxes[index], conf_type)
                 print("weighted_boxes[index]: " + ",".join(str(x) for x in weighted_boxes[index]))
             else:
+                print("here")
                 new_boxes.append([boxes[j].copy()])
                 weighted_boxes = np.vstack((weighted_boxes, boxes[j].copy()))
 
