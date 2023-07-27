@@ -153,7 +153,7 @@ def weighted_boxes_fusion(
         boxes_list,
         scores_list,
         labels_list,
-        weights=None,
+        weights,
         iou_thr=0.55,
         skip_box_thr=0.0,
         conf_type='avg',
