@@ -67,6 +67,7 @@ def prefilter_boxes(boxes, scores, labels, weights, thr):
 
             # [label, score, weight, model index, x1, y1, x2, y2]
             b = [label, float(score) * weights[t][j], weights[t][j], t, x1, y1, x2, y2] # label was typecasted to int & weight was float(score) * weights[t]
+            print(weights[t][j])
             if label not in new_boxes:
                 new_boxes[label] = []
             new_boxes[label].append(b)
@@ -75,7 +76,7 @@ def prefilter_boxes(boxes, scores, labels, weights, thr):
     for k in new_boxes:
         current_boxes = np.array(new_boxes[k])
         new_boxes[k] = current_boxes[current_boxes[:, 1].argsort()[::-1]]
-
+    print(new_boxes)
     return new_boxes
 
 
