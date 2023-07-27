@@ -186,7 +186,7 @@ def weighted_boxes_fusion(
     if len(weights) != len(boxes_list):
         print('Warning: incorrect number of weights {}. Must be: {}. Set weights equal to 1.'.format(len(weights), len(boxes_list)))
         weights = np.ones(len(boxes_list))
-    weights = np.array(weights)
+    weights = np.array(weights, dtype=object)
 
     if conf_type not in ['avg', 'max', 'box_and_model_avg', 'absent_model_aware_avg']:
         print('Unknown conf_type: {}. Must be "avg", "max" or "box_and_model_avg", or "absent_model_aware_avg"'.format(conf_type))
