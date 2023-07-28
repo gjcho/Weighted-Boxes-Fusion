@@ -76,7 +76,7 @@ def prefilter_boxes(boxes, scores, labels, weights, thr):
     for k in new_boxes:
         current_boxes = np.array(new_boxes[k])
         new_boxes[k] = current_boxes[current_boxes[:, 1].argsort()[::-1]]
-    print(new_boxes)
+    # print(new_boxes)
     return new_boxes
 
 
@@ -207,7 +207,7 @@ def weighted_boxes_fusion(
         new_boxes = []
         weighted_boxes = np.empty((0, 8))
         # print(str(label) + " (label):")
-        print("new_boxes: " + ",".join(str(x) for x in new_boxes))
+        # print("new_boxes: " + ",".join(str(x) for x in new_boxes))
         # Clusterize boxes
         for j in range(0, len(boxes)):
             # print(str(j) + " (j):")
