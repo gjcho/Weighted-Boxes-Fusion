@@ -67,7 +67,7 @@ def prefilter_boxes(boxes, scores, labels, weights, thr):
 
             # [label, score, weight, model index, x1, y1, x2, y2]
             b = [label, float(score) * weights[t][j], weights[t][j], t, x1, y1, x2, y2] # label was typecasted to int & weight was float(score) * weights[t]
-            print(weights[t][j])
+            # print(weights[t][j])
             if label not in new_boxes:
                 new_boxes[label] = []
             new_boxes[label].append(b)
@@ -201,27 +201,27 @@ def weighted_boxes_fusion(
         return np.zeros((0, 4)), np.zeros((0,)), np.zeros((0,))
 
     overall_boxes = []
-    print("inside weighted box fusion")
+    # print("inside weighted box fusion")
     for label in filtered_boxes:
         boxes = filtered_boxes[label]
         new_boxes = []
         weighted_boxes = np.empty((0, 8))
-        print(str(label) + " (label):")
+        # print(str(label) + " (label):")
         print("new_boxes: " + ",".join(str(x) for x in new_boxes))
         # Clusterize boxes
         for j in range(0, len(boxes)):
-            print(str(j) + " (j):")
+            # print(str(j) + " (j):")
             index, best_iou = find_matching_box_fast(weighted_boxes, boxes[j], iou_thr)
-            print("index: " + str(index))
+            # print("index: " + str(index))
 
             if index != -1:
                 new_boxes[index].append(boxes[j])
-                print("boxes[j]: " + ','.join(str(x) for x in boxes[j]))
-                print("new_boxes: " + ','.join(str(x) for x in new_boxes))
+                # print("boxes[j]: " + ','.join(str(x) for x in boxes[j]))
+                # print("new_boxes: " + ','.join(str(x) for x in new_boxes))
                 weighted_boxes[index] = get_weighted_box(new_boxes[index], conf_type)
-                print("weighted_boxes[index]: " + ",".join(str(x) for x in weighted_boxes[index]))
+                # print("weighted_boxes[index]: " + ",".join(str(x) for x in weighted_boxes[index]))
             else:
-                print("here")
+                # print("here")
                 new_boxes.append([boxes[j].copy()])
                 weighted_boxes = np.vstack((weighted_boxes, boxes[j].copy()))
 
