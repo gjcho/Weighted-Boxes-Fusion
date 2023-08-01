@@ -235,7 +235,7 @@ def weighted_boxes_fusion(
                 # identify unique model index by model index column
                 _, idx = np.unique(clustered_boxes[:, 3], return_index=True)
                 # rescale by unique model weights
-                weighted_boxes[i, 1] = weighted_boxes[i, 1] *  clustered_boxes[idx, 2].sum() /(weights1.sum()/numBoxes1 + weights2.sum()/numBoxes2) #weights.sum()
+                weighted_boxes[i, 1] = np.clamp(weighted_boxes[i, 1] *  clustered_boxes[idx, 2].sum() /(weights1.sum()/numBoxes1 + weights2.sum()/numBoxes2), 0, 1) #weights.sum()
             elif conf_type == 'absent_model_aware_avg':
                 clustered_boxes = np.array(clustered_boxes)
                 # get unique model index in the cluster
@@ -244,13 +244,13 @@ def weighted_boxes_fusion(
                 mask = np.ones(len(weights), dtype=bool)
                 mask[models] = False
                 # absent model aware weighted average
-                weighted_boxes[i, 1] = weighted_boxes[i, 1] * len(clustered_boxes) / (weighted_boxes[i, 2] + weights[mask].sum())
+                weighted_boxes[i, 1] = np.clamp(weighted_boxes[i, 1] * len(clustered_boxes) / (weighted_boxes[i, 2] + weights[mask].sum()), 0, 1)
             elif conf_type == 'max':
-                weighted_boxes[i, 1] = weighted_boxes[i, 1] / max(weights1.max(), weights2.max()) # weights.max()
+                weighted_boxes[i, 1] = np.clamp(weighted_boxes[i, 1] / max(weights1.max(), weights2.max()), 0, 1) # weights.max()
             elif not allows_overflow:
-                weighted_boxes[i, 1] = weighted_boxes[i, 1] * min(len(weights), len(clustered_boxes)) /(weights1.sum()/numBoxes1 + weights2.sum()/numBoxes2) #weights.sum()
+                weighted_boxes[i, 1] = np.clamp(weighted_boxes[i, 1] * min(len(weights), len(clustered_boxes)) /(weights1.sum()/numBoxes1 + weights2.sum()/numBoxes2), 0, 1) #weights.sum()
             else:
-                weighted_boxes[i, 1] = weighted_boxes[i, 1] * len(clustered_boxes) / (weights1.sum()/numBoxes1 + weights2.sum()/numBoxes2) #weights.sum()
+                weighted_boxes[i, 1] = np.clamp(weighted_boxes[i, 1] * len(clustered_boxes) / (weights1.sum()/numBoxes1 + weights2.sum()/numBoxes2), 0, 1) #weights.sum()
         overall_boxes.append(weighted_boxes)
     overall_boxes = np.concatenate(overall_boxes, axis=0)
     overall_boxes = overall_boxes[overall_boxes[:, 1].argsort()[::-1]]
