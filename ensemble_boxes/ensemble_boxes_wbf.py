@@ -248,7 +248,12 @@ def weighted_boxes_fusion(
             elif conf_type == 'max':
                 weighted_boxes[i, 1] = np.clip(weighted_boxes[i, 1] / max(weights1.max(), weights2.max()), 0, 1) # weights.max()
             elif not allows_overflow:
-                weighted_boxes[i, 1] = np.clip(weighted_boxes[i, 1] * min(len(weights), len(clustered_boxes)) /(weights1.sum()/numBoxes1 + weights2.sum()/numBoxes2), 0, 1) #weights.sum()
+                if(len(weights2)==0):
+                    weighted_boxes[i, 1] = np.clip(weighted_boxes[i, 1] * min(len(weights), len(clustered_boxes)) /(weights1.sum()/numBoxes1 + 0, 0, 1) #weights.sum()
+                elif(len(weights1)==0):
+                    weighted_boxes[i, 1] = np.clip(weighted_boxes[i, 1] * min(len(weights), len(clustered_boxes)) /(0 + weights2.sum()/numBoxes2), 0, 1) #weights.sum()
+                else:
+                    weighted_boxes[i, 1] = np.clip(weighted_boxes[i, 1] * min(len(weights), len(clustered_boxes)) /(weights1.sum()/numBoxes1 + weights2.sum()/numBoxes2), 0, 1) #weights.sum()
             else:
                 weighted_boxes[i, 1] = np.clip(weighted_boxes[i, 1] * len(clustered_boxes) / (weights1.sum()/numBoxes1 + weights2.sum()/numBoxes2), 0, 1) #weights.sum()
         overall_boxes.append(weighted_boxes)
